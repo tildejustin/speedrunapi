@@ -5,12 +5,16 @@ import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.CustomValue;
+import net.minecraft.client.gui.screen.Screen;
 import org.mcsr.speedrunapi.config.api.SpeedrunConfigScreenProvider;
 import org.mcsr.speedrunapi.config.api.annotations.SpeedrunConfig;
 
 import java.lang.reflect.Constructor;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SpeedrunConfigAPI {
 
@@ -101,9 +105,16 @@ public class SpeedrunConfigAPI {
     }
 
     private static <T> T constructClass(Class<T> aClass) throws ReflectiveOperationException {
-        Constructor<T> constructor = aClass.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        return constructor.newInstance();
+        Constructor<T> constructor;
+        try {
+            constructor = aClass.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            return constructor.newInstance();
+        } catch (NoSuchMethodException ignored) {
+            constructor = aClass.getDeclaredConstructor(Screen.class);
+            constructor.setAccessible(true);
+            return constructor.newInstance((Object) null);
+        }
     }
 
     public static SpeedrunConfigContainer<?> getConfig(String modID) {
