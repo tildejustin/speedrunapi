@@ -1,6 +1,5 @@
 package org.mcsr.speedrunapi.config.api.option;
 
-import net.minecraft.text.Text;
 import org.mcsr.speedrunapi.config.screen.SpeedrunConfigScreen;
 
 /**
@@ -11,5 +10,5 @@ public interface EnumTextProvider {
     /**
      * @return Returns name for the {@link Enum} value.
      */
-    Text toText();
+    String toText();
 }

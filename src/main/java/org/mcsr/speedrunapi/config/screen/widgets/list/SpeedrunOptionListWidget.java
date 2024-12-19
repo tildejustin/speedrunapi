@@ -5,8 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.client.gui.widget.EntryListWidget;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Language;
@@ -41,7 +40,7 @@ public class SpeedrunOptionListWidget extends ElementListWidget<SpeedrunOptionLi
 
         Map<String, Set<SpeedrunOption<?>>> categorizedOptions = new LinkedHashMap<>();
         for (SpeedrunOption<?> option : this.config.getOptions()) {
-            if (!filter.isEmpty() && !option.getName().getString().toLowerCase(Locale.ENGLISH).contains(filter)) {
+            if (!filter.isEmpty() && !option.getName().toLowerCase(Locale.ENGLISH).contains(filter)) {
                  continue;
             }
             if (!option.hasWidget() || !this.config.getConfig().shouldShowOption(option.getID())) {
@@ -76,10 +75,10 @@ public class SpeedrunOptionListWidget extends ElementListWidget<SpeedrunOptionLi
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        super.render(matrices, mouseX, mouseY, delta);
+    public void render(int mouseX, int mouseY, float delta) {
+        super.render(mouseX, mouseY, delta);
         if (this.tooltipToRender != null) {
-            this.tooltipToRender.renderTooltip(matrices, mouseX, mouseY);
+            this.tooltipToRender.renderTooltip(mouseX, mouseY);
             this.tooltipToRender = null;
         }
     }
@@ -94,11 +93,6 @@ public class SpeedrunOptionListWidget extends ElementListWidget<SpeedrunOptionLi
         return super.getScrollbarPositionX() + 42;
     }
 
-    @Override
-    protected void moveSelection(EntryListWidget.MoveDirection direction) {
-        this.moveSelectionIf(direction, entry -> !(entry instanceof OptionCategoryEntry));
-    }
-
     public abstract static class OptionListEntry extends ElementListWidget.Entry<OptionListEntry> {
     }
 
@@ -108,20 +102,20 @@ public class SpeedrunOptionListWidget extends ElementListWidget<SpeedrunOptionLi
         private final AbstractButtonWidget button;
 
         public OptionEntry(SpeedrunOption<?> option) {
-            this.text = new TextWidget(SpeedrunOptionListWidget.this.parent, SpeedrunOptionListWidget.this.client.textRenderer, option.getName(), option.getDescription(), SpeedrunOptionListWidget.this.top, SpeedrunOptionListWidget.this.bottom);
+            this.text = new TextWidget(SpeedrunOptionListWidget.this.parent, SpeedrunOptionListWidget.this.client.textRenderer, new LiteralText(option.getName()), option.getDescription(), SpeedrunOptionListWidget.this.top, SpeedrunOptionListWidget.this.bottom);
             this.button = option.createWidget();
         }
 
         @Override
-        public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             this.text.x = x + 5;
             int y_offset = (20 - SpeedrunOptionListWidget.this.client.textRenderer.fontHeight) / 2;
             this.text.y = y + 5 + y_offset;
-            this.text.renderText(matrices);
+            this.text.renderText();
 
             this.button.x = x + entryWidth - this.button.getWidth() - 5;
             this.button.y = y + 5;
-            this.button.render(matrices, mouseX, mouseY, tickDelta);
+            this.button.render(mouseX, mouseY, tickDelta);
 
             if (this.isMouseOver(mouseX, mouseY) && this.text.isMouseOver(mouseX, mouseY)) {
                 SpeedrunOptionListWidget.this.tooltipToRender = this.text;
@@ -148,8 +142,8 @@ public class SpeedrunOptionListWidget extends ElementListWidget<SpeedrunOptionLi
         }
 
         @Override
-        public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            SpeedrunOptionListWidget.this.drawCenteredText(matrices, SpeedrunOptionListWidget.this.client.textRenderer, this.category, x + entryWidth / 2, y + entryHeight / 2, 0xFFFFFF);
+        public void render(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            SpeedrunOptionListWidget.this.drawCenteredString(SpeedrunOptionListWidget.this.client.textRenderer, this.category.asFormattedString(), x + entryWidth / 2, y + entryHeight / 2, 0xFFFFFF);
         }
     }
 }

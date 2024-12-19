@@ -1,5 +1,6 @@
 package org.mcsr.speedrunapi.config.option;
 
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.ApiStatus;
@@ -128,9 +129,9 @@ public abstract class FieldBasedOption<T> implements SpeedrunOption<T> {
     }
 
     @Override
-    public @NotNull Text getName() {
+    public @NotNull String getName() {
         if (this.name != null) {
-            return new TranslatableText(this.name);
+            return I18n.translate(this.name);
         }
         return SpeedrunOption.super.getName();
     }

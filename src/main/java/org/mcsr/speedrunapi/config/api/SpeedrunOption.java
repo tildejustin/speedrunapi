@@ -3,7 +3,7 @@ package org.mcsr.speedrunapi.config.api;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.text.LiteralText;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Language;
@@ -38,8 +38,8 @@ public interface SpeedrunOption<T> {
     /**
      * @return Returns the name of this option.
      */
-    default @NotNull Text getName() {
-        return new TranslatableText("speedrunapi.config." + this.getModID() + ".option." + this.getID());
+    default @NotNull String getName() {
+        return I18n.translate("speedrunapi.config." + this.getModID() + ".option." + this.getID());
     }
 
     /**
@@ -58,15 +58,15 @@ public interface SpeedrunOption<T> {
      * @return Returns the value of this option as a {@link Text}.
      * @see SpeedrunOption#getDefaultText
      */
-    default @NotNull Text getText() {
+    default @NotNull String getText() {
         Language language = Language.getInstance();
         String value = "speedrunapi.config." + this.getModID() + ".option." + this.getID() + ".value";
         String valueSpecified = value + "." + this.get();
         if (language.hasTranslation(valueSpecified)) {
-            return new TranslatableText(valueSpecified);
+            return I18n.translate(valueSpecified);
         }
         if (language.hasTranslation(value)) {
-            return new TranslatableText(value, this.get());
+            return I18n.translate(value, this.get());
         }
         return this.getDefaultText();
     }
@@ -75,8 +75,8 @@ public interface SpeedrunOption<T> {
      * @return Returns the default {@link Text} returned by {@link SpeedrunOption#getText}.
      * @see SpeedrunOption#getText
      */
-    default @NotNull Text getDefaultText() {
-        return new LiteralText(this.getString());
+    default @NotNull String getDefaultText() {
+        return this.getString();
     }
 
     /**

@@ -18,7 +18,7 @@ public class NumberOptionTextFieldWidget<T extends NumberOption<?>> extends Text
     private final ButtonWidget applyButton;
 
     public NumberOptionTextFieldWidget(T option, int x, int y) {
-        super(MinecraftClient.getInstance().textRenderer, x, y, 125, 20, LiteralText.EMPTY);
+        super(MinecraftClient.getInstance().textRenderer, x, y, 125, 20, "");
         this.option = option;
         this.applyButton = new IconButtonWidget(APPLY_TEXTURE, 90, 222, 256, 256, x + 130, y, button -> this.apply());
         this.updateText();
@@ -50,11 +50,11 @@ public class NumberOptionTextFieldWidget<T extends NumberOption<?>> extends Text
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        super.render(matrices, mouseX, mouseY, delta);
+    public void render(int mouseX, int mouseY, float delta) {
+        super.render(mouseX, mouseY, delta);
         this.applyButton.x = this.x + 130;
         this.applyButton.y = this.y;
-        this.applyButton.render(matrices, mouseX, mouseY, delta);
+        this.applyButton.render(mouseX, mouseY, delta);
     }
 
     @Override

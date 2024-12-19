@@ -10,7 +10,7 @@ public abstract class NumberOptionSliderWidget<T extends NumberOption<?>> extend
     protected final T option;
 
     public NumberOptionSliderWidget(T option, int x, int y, double value) {
-        super(x, y, 150, 20, LiteralText.EMPTY, value);
+        super(x, y, 150, 20, "", value);
         this.option = option;
         this.updateValue();
     }

@@ -2,9 +2,8 @@ package org.mcsr.speedrunapi.config.option;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
-import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.resource.language.I18n;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.mcsr.speedrunapi.config.api.SpeedrunConfig;
@@ -22,8 +21,8 @@ public class BooleanOption extends FieldBasedOption<Boolean> {
     }
 
     @Override
-    public @NotNull Text getDefaultText() {
-        return ScreenTexts.getToggleText(this.get());
+    public @NotNull String getDefaultText() {
+        return I18n.translate(this.get() ? "options.on" : "options.off");
     }
 
     @Override

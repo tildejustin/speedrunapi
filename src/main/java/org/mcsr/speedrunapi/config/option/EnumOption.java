@@ -3,6 +3,7 @@ package org.mcsr.speedrunapi.config.option;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.ApiStatus;
@@ -70,11 +71,11 @@ public class EnumOption extends FieldBasedOption<Enum> {
     }
 
     @Override
-    public @NotNull Text getText() {
+    public @NotNull String getText() {
         Enum value = this.get();
         if (value instanceof EnumTextProvider) {
             return ((EnumTextProvider) value).toText();
         }
-        return new TranslatableText("speedrunapi.config." + this.getModID() + ".option." + this.getID() + ".value." + value.name());
+        return I18n.translate("speedrunapi.config." + this.getModID() + ".option." + this.getID() + ".value." + value.name());
     }
 }

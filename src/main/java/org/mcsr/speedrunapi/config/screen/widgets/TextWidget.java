@@ -4,8 +4,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -49,41 +47,41 @@ public class TextWidget implements Drawable, Element {
         if (button == 0) {
             Text textComponent = this.getTextComponentAtPosition(mouseX, mouseY);
             if (textComponent != null) {
-                return this.screen.handleTextClick(textComponent.getStyle());
+                return this.screen.handleTextClick(textComponent);
             }
         }
         return false;
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.renderText(matrices);
-        this.renderTooltip(matrices, mouseX, mouseY);
+    public void render(int mouseX, int mouseY, float delta) {
+        this.renderText();
+        this.renderTooltip(mouseX, mouseY);
     }
 
-    public void renderText(MatrixStack matrices) {
-        this.textRenderer.draw(matrices, this.text, this.x, this.y, 0xFFFFFF);
+    public void renderText() {
+        this.textRenderer.draw(this.text.asFormattedString(), this.x, this.y, 0xFFFFFF);
     }
 
-    public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
+    public void renderTooltip(int mouseX, int mouseY) {
         if (this.tooltip != null && this.isMouseOver(mouseX, mouseY)) {
-            List<StringRenderable> tooltip = this.textRenderer.wrapLines(this.tooltip, 200);
+            List<String> tooltip = this.textRenderer.wrapStringToWidthAsList(this.tooltip.asFormattedString(), 200);
             int height = tooltip.size() * 10;
             int y = mouseY;
             y = Math.min(y, this.maxTooltipY - height);
             y = Math.max(y, this.minTooltipY - height);
-            this.screen.renderTooltip(matrices, tooltip, mouseX, y);
+            this.screen.renderTooltip(tooltip, mouseX, y);
         }
     }
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
-        return mouseX > this.x && mouseX < this.x + this.textRenderer.getWidth(this.text) && mouseY > this.y && mouseY < this.y + this.textRenderer.fontHeight;
+        return mouseX > this.x && mouseX < this.x + this.textRenderer.getStringWidth(this.text.asFormattedString()) && mouseY > this.y && mouseY < this.y + this.textRenderer.fontHeight;
     }
 
     public Text getTextComponentAtPosition(double x, double y) {
         if (this.isMouseOver(x, y)) {
-            return this.getTextComponentAtPositionInternal(this.text, 0, this.textRenderer.getWidth(this.text.copy()), x, y);
+            return this.getTextComponentAtPositionInternal(this.text, 0, this.textRenderer.getStringWidth(this.text.asFormattedString()), x, y);
         }
         return null;
     }
@@ -94,7 +92,7 @@ public class TextWidget implements Drawable, Element {
         }
         textX += width;
         for (Text sibling : text.getSiblings()) {
-            int siblingWidth = this.textRenderer.getWidth(sibling.copy());
+            int siblingWidth = this.textRenderer.getStringWidth(sibling.asFormattedString());
             Text textAtPosition = this.getTextComponentAtPositionInternal(sibling, textX, siblingWidth, x, y);
             if (textAtPosition != null) {
                 return textAtPosition;
@@ -105,6 +103,6 @@ public class TextWidget implements Drawable, Element {
     }
 
     public int getWidth() {
-        return this.textRenderer.getWidth(this.text);
+        return this.textRenderer.getStringWidth(this.text.asFormattedString());
     }
 }
