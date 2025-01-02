@@ -1,6 +1,7 @@
 package org.mcsr.speedrunapi.config.api;
 
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.InputUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,6 +10,7 @@ import org.mcsr.speedrunapi.config.SpeedrunConfigContainer;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -110,5 +112,13 @@ public interface SpeedrunConfig extends SpeedrunConfigStorage, SpeedrunConfigScr
      */
     default boolean shouldShowOption(String option) {
         return true;
+    }
+
+    /**
+     * Mod Authors can override this method to add buttons, created through {@link SpeedrunConfigAPI.CustomButtonOption}
+     * @return
+     */
+    default @Nullable Set<SpeedrunOption<Void>> addScreenEntries() {
+        return null;
     }
 }

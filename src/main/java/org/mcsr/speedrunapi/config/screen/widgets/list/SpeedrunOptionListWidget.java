@@ -39,6 +39,13 @@ public class SpeedrunOptionListWidget extends ElementListWidget<SpeedrunOptionLi
 
         filter = filter.toLowerCase(Locale.ENGLISH);
 
+        if (filter.isEmpty()) {
+            Set<SpeedrunOption<Void>> buttons = this.config.getConfig().addScreenEntries();
+            if (buttons != null) {
+                buttons.forEach(button -> this.addEntry(new OptionEntry(button)));
+            }
+        }
+
         Map<String, Set<SpeedrunOption<?>>> categorizedOptions = new LinkedHashMap<>();
         for (SpeedrunOption<?> option : this.config.getOptions()) {
             if (!filter.isEmpty() && !option.getName().getString().toLowerCase(Locale.ENGLISH).contains(filter)) {

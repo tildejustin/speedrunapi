@@ -9,7 +9,9 @@ import net.fabricmc.loader.api.metadata.CustomValue;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.mcsr.speedrunapi.config.api.SpeedrunConfig;
@@ -21,6 +23,7 @@ import org.mcsr.speedrunapi.config.exceptions.InitializeConfigException;
 import org.mcsr.speedrunapi.config.exceptions.InvalidConfigException;
 import org.mcsr.speedrunapi.config.exceptions.NoSuchConfigException;
 import org.mcsr.speedrunapi.config.exceptions.SpeedrunConfigAPIException;
+import org.mcsr.speedrunapi.config.option.ButtonOption;
 import org.mcsr.speedrunapi.config.option.CustomFieldBasedOption;
 import org.mcsr.speedrunapi.config.screen.SpeedrunConfigScreen;
 
@@ -32,6 +35,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public final class SpeedrunConfigAPI {
     private static final EnumMap<InitializeOn.InitPoint, Map<ModContainer, Class<? extends SpeedrunConfig>>> CONFIGS_TO_INITIALIZE = new EnumMap<>(InitializeOn.InitPoint.class);
@@ -266,6 +270,53 @@ public final class SpeedrunConfigAPI {
     @ApiStatus.Internal
     public static Screen createDefaultModConfigScreen(String modID, @Nullable Predicate<InputUtil.Key> inputListener, Screen parent) {
         return new SpeedrunConfigScreen(getConfig(modID), inputListener, parent);
+    }
+
+    public static class CustomButtonOption {
+        public static class Builder {
+            private final SpeedrunConfig config;
+            private final String id;
+            private final Text message;
+            private final ButtonWidget.PressAction onPress;
+            private Supplier<Boolean> hideIf = () -> true;
+            @Nullable
+            private String name = null;
+            @Nullable
+            private String description = null;
+            @Nullable
+            protected String category = null;
+
+            public Builder(SpeedrunConfig config, String id, Text message, ButtonWidget.PressAction onPress) {
+                this.config = config;
+                this.id = id;
+                this.message = message;
+                this.onPress = onPress;
+            }
+
+            public Builder hideIf(Supplier<Boolean> hideIf) {
+                this.hideIf = hideIf;
+                return this;
+            }
+
+            public Builder name(@Nullable String name) {
+                this.name = name;
+                return this;
+            }
+
+            public Builder description(@Nullable String description) {
+                this.description = description;
+                return this;
+            }
+
+            public Builder category(@Nullable String category) {
+                this.category = category;
+                return this;
+            }
+
+            public SpeedrunOption<Void> build() {
+                return new ButtonOption(config, id, message, onPress, hideIf, name, description, category);
+            }
+        }
     }
 
     @SuppressWarnings("unused")
