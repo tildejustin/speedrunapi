@@ -26,7 +26,7 @@ dependencies {
 	include(implementation(annotationProcessor "com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared}"))
 
 	// Fabric API
-	include(modImplementation fabricApi.module("fabric-keybindings-v0", "0.5.7+build.2-20w14infinite"))
+	include(modImplementation "com.github.tildejustin:key-binding-api:a41fc49671")
 }
 
 processResources {
