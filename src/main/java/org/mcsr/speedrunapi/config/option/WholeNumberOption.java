@@ -1,5 +1,7 @@
 package org.mcsr.speedrunapi.config.option;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +41,7 @@ public abstract class WholeNumberOption<T extends Number> extends NumberOption<T
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public @NotNull AbstractButtonWidget createWidget() {
         if (this.useTextField) {
             return new NumberOptionTextFieldWidget<>(this, 0, 0);

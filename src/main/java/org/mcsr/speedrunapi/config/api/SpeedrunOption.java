@@ -2,6 +2,8 @@ package org.mcsr.speedrunapi.config.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -143,5 +145,6 @@ public interface SpeedrunOption<T> {
      *
      * @return Returns a new {@link AbstractButtonWidget} to be added to the config screen.
      */
+    @Environment(EnvType.CLIENT)
     @NotNull AbstractButtonWidget createWidget();
 }

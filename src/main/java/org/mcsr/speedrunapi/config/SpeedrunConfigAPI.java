@@ -3,6 +3,8 @@ package org.mcsr.speedrunapi.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.CustomValue;
@@ -263,6 +265,7 @@ public final class SpeedrunConfigAPI {
         return configScreenProviders;
     }
 
+    @Environment(EnvType.CLIENT)
     @ApiStatus.Internal
     public static Screen createDefaultModConfigScreen(String modID, @Nullable Predicate<InputUtil.Key> inputListener, Screen parent) {
         return new SpeedrunConfigScreen(getConfig(modID), inputListener, parent);
@@ -358,6 +361,7 @@ public final class SpeedrunConfigAPI {
 
         @FunctionalInterface
         public interface WidgetProvider<T> {
+            @Environment(EnvType.CLIENT)
             AbstractButtonWidget createWidget(SpeedrunOption<T> option, SpeedrunConfig config, SpeedrunConfigStorage configStorage, Field optionField);
         }
     }

@@ -2,6 +2,8 @@ package org.mcsr.speedrunapi.config.option;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -65,6 +67,7 @@ public class EnumOption extends FieldBasedOption<Enum> {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public @NotNull AbstractButtonWidget createWidget() {
         return new EnumOptionButtonWidget(this, 0, 0);
     }

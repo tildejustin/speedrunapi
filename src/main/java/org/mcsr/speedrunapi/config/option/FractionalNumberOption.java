@@ -1,5 +1,7 @@
 package org.mcsr.speedrunapi.config.option;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -47,6 +49,7 @@ public abstract class FractionalNumberOption<T extends Number> extends NumberOpt
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public @NotNull AbstractButtonWidget createWidget() {
         if (this.useTextField) {
             return new NumberOptionTextFieldWidget<>(this, 0, 0);

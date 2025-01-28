@@ -1,6 +1,8 @@
 package org.mcsr.speedrunapi.config.option;
 
 import com.google.gson.JsonElement;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -78,6 +80,7 @@ public class CustomFieldBasedOption<T> extends FieldBasedOption<T> {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public @NotNull AbstractButtonWidget createWidget() {
         if (this.createWidgetFunction == null) {
             throw new UnsupportedOperationException("No widget supplier given for " + this.getID() + " in " + this.getModID() + "config.");

@@ -2,6 +2,8 @@ package org.mcsr.speedrunapi.config.option;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.text.Text;
@@ -62,6 +64,7 @@ public class BooleanOption extends FieldBasedOption<Boolean> {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public @NotNull AbstractButtonWidget createWidget() {
         return new BooleanOptionButtonWidget(this, 0, 0);
     }

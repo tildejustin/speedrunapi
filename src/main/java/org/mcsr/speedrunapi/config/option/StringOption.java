@@ -2,6 +2,8 @@ package org.mcsr.speedrunapi.config.option;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -74,6 +76,7 @@ public class StringOption extends FieldBasedOption<String> {
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public @NotNull AbstractButtonWidget createWidget() {
         return new StringOptionTextFieldWidget(this, 0, 0);
     }
