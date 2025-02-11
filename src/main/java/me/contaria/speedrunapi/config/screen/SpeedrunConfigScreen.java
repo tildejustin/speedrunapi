@@ -49,27 +49,27 @@ public class SpeedrunConfigScreen extends Screen {
 
     @Override
     protected void init() {
-        assert this.minecraft != null;
-        this.searchField = new TextFieldWidget(this.minecraft.textRenderer, this.width / 2 - 100, 25, 200, 20, this.searchField, I18n.translate("speedrunapi.gui.config.search"));
+        assert this.client != null;
+        this.searchField = new TextFieldWidget(this.client.textRenderer, this.width / 2 - 100, 25, 200, 20, this.searchField, I18n.translate("speedrunapi.gui.config.search"));
         this.searchField.setVisible(this.searchFieldOpen);
         this.searchField.setChangedListener(string -> this.list.updateEntries(string));
         this.children.add(this.searchField);
-        this.list = new SpeedrunOptionListWidget(this, this.config, this.minecraft, this.width, this.height, 25, this.height - 32, this.searchField.getText());
+        this.list = new SpeedrunOptionListWidget(this, this.config, this.client, this.width, this.height, 25, this.height - 32, this.searchField.getText());
         if (this.searchFieldOpen) {
             this.list.adjustTop(50);
         }
         this.children.add(this.list);
         this.addButton(new ButtonWidget(this.width / 2 - 100, this.height - 27, 200, 20, I18n.translate("gui.done"), button -> this.onClose()));
-        this.minecraft.keyboard.enableRepeatEvents(true);
+        this.client.keyboard.enableRepeatEvents(true);
     }
 
     @Override
     public void render(int mouseX, int mouseY, float delta) {
-        assert this.minecraft != null;
+        assert this.client != null;
         this.renderBackground();
         this.list.render(mouseX, mouseY, delta);
         this.searchField.render(mouseX, mouseY, delta);
-        this.drawCenteredString(this.minecraft.textRenderer, this.title.asFormattedString(), this.width / 2, 10, 0xFFFFFF);
+        this.drawCenteredString(this.client.textRenderer, this.title.asFormattedString(), this.width / 2, 10, 0xFFFFFF);
         super.render(mouseX, mouseY, delta);
     }
 
@@ -95,14 +95,14 @@ public class SpeedrunConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        assert this.minecraft != null;
-        this.minecraft.openScreen(this.parent);
+        assert this.client != null;
+        this.client.openScreen(this.parent);
     }
 
     @Override
     public void removed() {
-        assert this.minecraft != null;
-        this.minecraft.keyboard.enableRepeatEvents(false);
+        assert this.client != null;
+        this.client.keyboard.enableRepeatEvents(false);
         try {
             this.config.save();
         } catch (IOException e) {

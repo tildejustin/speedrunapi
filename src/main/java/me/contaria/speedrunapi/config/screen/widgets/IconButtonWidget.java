@@ -41,7 +41,7 @@ public class IconButtonWidget extends ButtonWidget {
     public void renderButton(int mouseX, int mouseY, float delta) {
         super.renderButton(mouseX, mouseY, delta);
         MinecraftClient.getInstance().getTextureManager().bindTexture(this.texture);
-        DrawableHelper.blit(this.x + 2, this.y + 2, this.u, this.v, 16, 16, this.textureWidth, this.textureHeight);
+        DrawableHelper.drawTexture(this.x + 2, this.y + 2, this.u, this.v, 16, 16, this.textureWidth, this.textureHeight);
     }
 
     @Override

@@ -67,8 +67,8 @@ public class SpeedrunModConfigListWidget extends EntryListWidget<SpeedrunModConf
     }
 
     @Override
-    protected int getScrollbarPosition() {
-        return super.getScrollbarPosition() + 20;
+    protected int getScrollbarPositionX() {
+        return super.getScrollbarPositionX() + 20;
     }
 
     @Override
@@ -118,11 +118,11 @@ public class SpeedrunModConfigListWidget extends EntryListWidget<SpeedrunModConf
                 text.append(author);
                 shouldAddComma = true;
             }
-            return new TextWidget(SpeedrunModConfigListWidget.this.parent, SpeedrunModConfigListWidget.this.minecraft.textRenderer, text.toString());
+            return new TextWidget(SpeedrunModConfigListWidget.this.parent, SpeedrunModConfigListWidget.this.client.textRenderer, text.toString());
         }
 
         private List<String> createDescription(String description) {
-            List<String> list = SpeedrunModConfigListWidget.this.minecraft.textRenderer.wrapStringToWidthAsList(description, SpeedrunModConfigListWidget.this.getRowWidth() - 32 - 6);
+            List<String> list = SpeedrunModConfigListWidget.this.client.textRenderer.wrapStringToWidthAsList(description, SpeedrunModConfigListWidget.this.getRowWidth() - 32 - 6);
             if (list.size() > 2) {
                 list.set(1, list.get(1) + "...");
                 return list.subList(0, 2);
@@ -131,13 +131,13 @@ public class SpeedrunModConfigListWidget extends EntryListWidget<SpeedrunModConf
         }
 
         private void registerIcon() {
-            if (SpeedrunModConfigListWidget.this.minecraft.getTextureManager().getTexture(this.icon) != null) {
+            if (SpeedrunModConfigListWidget.this.client.getTextureManager().getTexture(this.icon) != null) {
                 this.hasIcon = true;
                 return;
             }
             this.mod.getIconPath(32).flatMap(this.modContainer::findPath).ifPresent(iconPath -> {
                 try (InputStream inputStream = Files.newInputStream(iconPath)) {
-                    SpeedrunModConfigListWidget.this.minecraft.getTextureManager().registerTexture(this.icon, new NativeImageBackedTexture(NativeImage.read(inputStream)));
+                    SpeedrunModConfigListWidget.this.client.getTextureManager().registerTexture(this.icon, new NativeImageBackedTexture(NativeImage.read(inputStream)));
                     this.hasIcon = true;
                 } catch (IOException e) {
                     SpeedrunAPI.LOGGER.warn("Failed to load mod icon for {}.", this.mod.getId(), e);
@@ -147,7 +147,7 @@ public class SpeedrunModConfigListWidget extends EntryListWidget<SpeedrunModConf
 
         @Override
         public void render(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            MinecraftClient client = SpeedrunModConfigListWidget.this.minecraft;
+            MinecraftClient client = SpeedrunModConfigListWidget.this.client;
             TextRenderer textRenderer = client.textRenderer;
 
             textRenderer.draw(this.name, x + 32 + 3, y + 1, 0xFFFFFF);
@@ -169,7 +169,7 @@ public class SpeedrunModConfigListWidget extends EntryListWidget<SpeedrunModConf
 
             client.getTextureManager().bindTexture(this.hasIcon ? this.icon : NO_MOD_ICON);
             RenderSystem.enableBlend();
-            DrawableHelper.blit(x, y, 0.0f, 0.0f, 32, 32, 32, 32);
+            DrawableHelper.drawTexture(x, y, 0.0f, 0.0f, 32, 32, 32, 32);
             RenderSystem.disableBlend();
 
             if (client.options.touchscreen || hovered) {
@@ -211,14 +211,14 @@ public class SpeedrunModConfigListWidget extends EntryListWidget<SpeedrunModConf
         protected void renderIfHovered(int x, int y, int mouseX, int mouseY) {
             boolean available = this.configScreenProvider.isAvailable();
 
-            SpeedrunModConfigListWidget.this.minecraft.getTextureManager().bindTexture(EDIT_MOD_CONFIG);
+            SpeedrunModConfigListWidget.this.client.getTextureManager().bindTexture(EDIT_MOD_CONFIG);
             DrawableHelper.fill(x, y, x + 32, y + 32, -1601138544);
             RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
             int textureOffset = mouseX - x < 32 ? 32 : 0;
-            DrawableHelper.blit(x, y, available ? 0.0f : 96.0f, textureOffset, 32, 32, 256, 256);
+            DrawableHelper.drawTexture(x, y, available ? 0.0f : 96.0f, textureOffset, 32, 32, 256, 256);
 
             if (!available && this.isMouseOver(mouseX, mouseY)) {
-                SpeedrunModConfigListWidget.this.parent.renderTooltip(SpeedrunModConfigListWidget.this.minecraft.textRenderer.wrapStringToWidthAsList(this.unavailableTooltip, 200), mouseX, mouseY);
+                SpeedrunModConfigListWidget.this.parent.renderTooltip(SpeedrunModConfigListWidget.this.client.textRenderer.wrapStringToWidthAsList(this.unavailableTooltip, 200), mouseX, mouseY);
             }
         }
 
@@ -250,8 +250,8 @@ public class SpeedrunModConfigListWidget extends EntryListWidget<SpeedrunModConf
             if (!this.configScreenProvider.isAvailable()) {
                 return false;
             }
-            SpeedrunModConfigListWidget.this.minecraft.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
-            SpeedrunModConfigListWidget.this.minecraft.openScreen(this.configScreenProvider.createConfigScreen(SpeedrunModConfigListWidget.this.parent));
+            SpeedrunModConfigListWidget.this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+            SpeedrunModConfigListWidget.this.client.openScreen(this.configScreenProvider.createConfigScreen(SpeedrunModConfigListWidget.this.parent));
             return true;
         }
     }
@@ -261,7 +261,7 @@ public class SpeedrunModConfigListWidget extends EntryListWidget<SpeedrunModConf
 
         @Override
         public void render(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            SpeedrunModConfigListWidget.this.drawCenteredString(SpeedrunModConfigListWidget.this.minecraft.textRenderer, this.text, x + entryWidth / 2, y + entryHeight / 2, 0xFFFFFF);
+            SpeedrunModConfigListWidget.this.drawCenteredString(SpeedrunModConfigListWidget.this.client.textRenderer, this.text, x + entryWidth / 2, y + entryHeight / 2, 0xFFFFFF);
         }
     }
 }
