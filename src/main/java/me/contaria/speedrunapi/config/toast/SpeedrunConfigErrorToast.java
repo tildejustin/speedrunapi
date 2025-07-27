@@ -36,15 +36,15 @@ public class SpeedrunConfigErrorToast implements Toast {
         List<String> description = manager.getGame().textRenderer.wrapStringToWidthAsList(I18n.translate(this.descriptionKey, this.descriptionArgs), 160 - 7);
         manager.getGame().getTextureManager().bindTexture(TOASTS_TEX);
         if (description.size() < 2) {
-            manager.blit(0, 0, 0, 0, 160, 32);
+            manager.drawTexture(0, 0, 0, 0, 160, 32);
         } else {
-            manager.blit(0, 0, 0, 0, 160, 11);
+            manager.drawTexture(0, 0, 0, 0, 160, 11);
             int y = 8;
             for (int i = 0; i < description.size(); i++) {
-                manager.blit(0, y, 0, 11, 160, 10);
+                manager.drawTexture(0, y, 0, 11, 160, 10);
                 y += 10;
             }
-            manager.blit(0, y, 0, 21, 160, 11);
+            manager.drawTexture(0, y, 0, 21, 160, 11);
         }
 
         manager.getGame().textRenderer.draw(I18n.translate(this.titleKey), 7.0f, 7.0f, 0xFFFF00 | 0xFF000000);

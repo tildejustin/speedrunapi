@@ -22,8 +22,8 @@ public abstract class SettingsScreenMixin extends Screen {
     @Inject(method = "init", at = @At("TAIL"))
     private void addSpeedrunConfigButton(CallbackInfo ci) {
         this.addButton(new IconButtonWidget(IdentifierUtil.ofVanilla("textures/item/writable_book.png"), this.width / 2 + 160, this.height / 6 - 12, I18n.translate("speedrunapi.gui.config.button"), button -> {
-            assert this.minecraft != null;
-            this.minecraft.openScreen(new SpeedrunModConfigsScreen(this));
+            assert this.client != null;
+            this.client.openScreen(new SpeedrunModConfigsScreen(this));
         }));
     }
 }

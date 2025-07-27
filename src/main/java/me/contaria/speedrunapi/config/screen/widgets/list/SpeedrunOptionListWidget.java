@@ -87,8 +87,8 @@ public class SpeedrunOptionListWidget extends ElementListWidget<SpeedrunOptionLi
     }
 
     @Override
-    protected int getScrollbarPosition() {
-        return super.getScrollbarPosition() + 42;
+    protected int getScrollbarPositionX() {
+        return super.getScrollbarPositionX() + 42;
     }
 /*
     @Override
@@ -106,14 +106,14 @@ public class SpeedrunOptionListWidget extends ElementListWidget<SpeedrunOptionLi
         private final AbstractButtonWidget button;
 
         public OptionEntry(SpeedrunOption<?> option) {
-            this.text = new TextWidget(SpeedrunOptionListWidget.this.parent, SpeedrunOptionListWidget.this.minecraft.textRenderer, option.getName(), option.getDescription(), SpeedrunOptionListWidget.this.top, SpeedrunOptionListWidget.this.bottom);
+            this.text = new TextWidget(SpeedrunOptionListWidget.this.parent, SpeedrunOptionListWidget.this.client.textRenderer, option.getName(), option.getDescription(), SpeedrunOptionListWidget.this.top, SpeedrunOptionListWidget.this.bottom);
             this.button = option.createWidget();
         }
 
         @Override
         public void render(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             this.text.x = x + 5;
-            int y_offset = (20 - SpeedrunOptionListWidget.this.minecraft.textRenderer.fontHeight) / 2;
+            int y_offset = (20 - SpeedrunOptionListWidget.this.client.textRenderer.fontHeight) / 2;
             this.text.y = y + 5 + y_offset;
             this.text.renderText();
 
@@ -147,7 +147,7 @@ public class SpeedrunOptionListWidget extends ElementListWidget<SpeedrunOptionLi
 
         @Override
         public void render(int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            SpeedrunOptionListWidget.this.drawCenteredString(SpeedrunOptionListWidget.this.minecraft.textRenderer, this.category, x + entryWidth / 2, y + entryHeight / 2, 0xFFFFFF);
+            SpeedrunOptionListWidget.this.drawCenteredString(SpeedrunOptionListWidget.this.client.textRenderer, this.category, x + entryWidth / 2, y + entryHeight / 2, 0xFFFFFF);
         }
     }
 }
